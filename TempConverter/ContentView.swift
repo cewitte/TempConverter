@@ -8,14 +8,66 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+    @State private var tempEntry: Decimal = 0.0
+    @State private var tempEntryScale = "Celsius"
+    
+    let scales = ["Celsius", "Fahrenheit", "Kelvin"]
+    
+    var celsius : Decimal {
+        switch tempEntryScale {
+        case "Fahrenheit":
+            return (tempEntry - 32) / 1.8
+        case "Kelvin":
+            return tempEntry - 273.15
+        default:
+            return tempEntry
         }
-        .padding()
+    }
+    
+    var fahrenheit: Decimal {
+        switch tempEntryScale {
+        case "Celsius":
+            return (tempEntry * 1.8) + 32
+        case "Kelvin":
+            return (tempEntry - 273.15) * 9 / 5 + 32
+        default:
+            return tempEntry
+        }
+    }
+    
+    var kelvin: Decimal {
+        switch tempEntryScale {
+        case "Celsius":
+            return tempEntry + 273.15
+        case "Fahrenheit":
+            return (tempEntry - 32) * 5 / 9 + 273.15
+        default:
+            return tempEntry
+        }
+    }
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Add the temperature") {
+                    TextField("Temperature", value: $tempEntry, format: .number)
+                        .keyboardType(.decimalPad)
+            
+                    Picker("Temperature Scale", selection: $tempEntryScale) {
+                        ForEach(scales, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                }
+                
+                Section("Converted Temperature") {
+                    Text("\(celsius)º C")
+                    Text("\(fahrenheit)º F")
+                    Text("\(kelvin)º K")
+                }
+            }
+            .navigationTitle("Temperature Converter")
+        }
     }
 }
 
