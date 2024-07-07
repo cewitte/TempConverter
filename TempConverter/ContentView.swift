@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var tempEntry: Decimal = 0.0
+    @State private var tempEntry: Double = 0.0
     @State private var tempEntryScale = "Celsius"
     
     let scales = ["Celsius", "Fahrenheit", "Kelvin"]
     
-    var celsius : Decimal {
+    var celsius : Double {
         switch tempEntryScale {
         case "Fahrenheit":
             return (tempEntry - 32) / 1.8
@@ -24,7 +24,7 @@ struct ContentView: View {
         }
     }
     
-    var fahrenheit: Decimal {
+    var fahrenheit: Double {
         switch tempEntryScale {
         case "Celsius":
             return (tempEntry * 1.8) + 32
@@ -35,7 +35,7 @@ struct ContentView: View {
         }
     }
     
-    var kelvin: Decimal {
+    var kelvin: Double {
         switch tempEntryScale {
         case "Celsius":
             return tempEntry + 273.15
@@ -61,9 +61,9 @@ struct ContentView: View {
                 }
                 
                 Section("Converted Temperature") {
-                    Text("\(celsius)º C")
-                    Text("\(fahrenheit)º F")
-                    Text("\(kelvin)º K")
+                    Text("\(celsius.formatted())º F")
+                    Text("\(fahrenheit.formatted())º F")
+                    Text("\(kelvin.formatted())º K")
                 }
             }
             .navigationTitle("Temperature Converter")
